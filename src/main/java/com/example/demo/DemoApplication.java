@@ -1,41 +1,44 @@
 package com.example.demo;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 @SpringBootApplication
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+    private static final String TOPIC_NAME = "study";
 
-		Properties configs = new Properties();
-		configs.put("bootstrap.servers", "3.91.239.118:9092");
-		configs.put("session.timeout.ms", "1000");
-		configs.put("group.id", "test_log");
-		configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");    // key deserializer
-		configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  // value deserializer
+    public static void main(String[] args) {
 
-		KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(configs);
-		consumer.subscribe(Arrays.asList("test_log")); // topic 설정
+        SpringApplication.run(DemoApplication.class, args);
 
-		while (true) {
-			ConsumerRecords<String, String> records = consumer.poll(500);
-			for (ConsumerRecord<String, String> record : records) {
-				String input = record.topic();
-				if ("test_log".equals(input)) {
-					System.out.println(record.value());
-				} else {
-					throw new IllegalStateException("get message on topic " + record.topic());
-				}
-			}
-		}
-	}
+        Properties configs = new Properties();
+        configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configs.put(ConsumerConfig.GROUP_ID_CONFIG, TOPIC_NAME);
+        configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());    // key deserializer
+        configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());  // value deserializer
 
+        Consumer<String, String> consumer = new KafkaConsumer<String, String>(configs);
+        consumer.subscribe(Collections.singletonList(TOPIC_NAME)); // topic 설정
+
+        while (true) {
+            ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(10000));
+            for (ConsumerRecord<String, String> record : records) {
+                String input = record.topic();
+                if (TOPIC_NAME.equals(input)) {
+                    System.out.println(record.value());
+                } else {
+                    throw new IllegalStateException("get message on topic " + record.topic());
+                }
+            }
+        }
+    }
 }
