@@ -17,11 +17,6 @@ public class Consumer {
     public void processMessage(ConsumerRecord<String, Object> record) {
         Object value = record.value();
         log.info("Get group1 message!!! :" + value);
-    }
-
-    @KafkaListener(topics = "study", groupId = "study-2")
-    public void processMessage2(ConsumerRecord<String, Object> record) {
-        Object value = record.value();
-        log.info("Get group2 message!!! :" + value);
+        throw new IllegalArgumentException();
     }
 }
