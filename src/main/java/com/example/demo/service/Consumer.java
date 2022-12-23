@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 
-import com.example.demo.dto.MessageTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -4,17 +4,16 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.apache.kafka.common.utils.PrimitiveRef;
 
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class MessageTemplate {
-    private String message;
+public class ProductInfo {
+    private String productName;
     private Integer price;
 
-    public MessageTemplate(String message, Integer price) {
-        this.message = message;
+    public ProductInfo(String productName, Integer price) {
+        this.productName = productName;
         this.price = price;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProductInfo;
 import com.example.demo.service.Producer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ public class KafkaController {
 
     @GetMapping
     public void sendMessage() {
-        producer.sendMessage("TEST");
+        ProductInfo productInfo = new ProductInfo("MacBookPro", 1000);
+        producer.sendMessage(productInfo);
     }
 }

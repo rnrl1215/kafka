@@ -1,18 +1,16 @@
 package com.example.demo.config;
 
-import com.example.demo.dto.MessageTemplate;
+import com.example.demo.dto.ProductInfo;
 import com.example.demo.handler.KafkaErrorHandler;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.kafka.listener.*;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
@@ -20,25 +18,28 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class KafkaConsumerConfig {
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
 
+    private final KafkaErrorHandler kafkaErrorHandler;
+
     @Bean
-    public ConsumerFactory<String, MessageTemplate> consumerFactory() {
+    public ConsumerFactory<String, ProductInfo> consumerFactory() {
         Map<String,Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
        return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(),
-                new JsonDeserializer<>(MessageTemplate.class));
+                new JsonDeserializer<>(ProductInfo.class));
     }
 
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, MessageTemplate> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, MessageTemplate> factory
+    public ConcurrentKafkaListenerContainerFactory<String, ProductInfo> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ProductInfo> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
-        factory.setCommonErrorHandler(new KafkaErrorHandler());
+        factory.setCommonErrorHandler(kafkaErrorHandler);
         return factory;
     }
 }
