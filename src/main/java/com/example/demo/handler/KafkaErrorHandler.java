@@ -22,7 +22,12 @@ public class KafkaErrorHandler implements CommonErrorHandler {
     private final KafkaTemplate<String, ProductInfo> kafkaTemplate;
 
     @Override
-    public void handleOtherException(Exception thrownException, Consumer<?, ?> consumer, MessageListenerContainer container, boolean batchListener) {
+    public void handleOtherException(
+            Exception thrownException,
+            Consumer<?, ?> consumer,
+            MessageListenerContainer container,
+            boolean batchListener)
+    {
         Collection<TopicPartition> assignedPartitions = container.getAssignedPartitions();
         log.info("error");
         ContainerProperties containerProperties = container.getContainerProperties();
@@ -35,7 +40,8 @@ public class KafkaErrorHandler implements CommonErrorHandler {
             Exception thrownException,
             ConsumerRecord<?, ?> record,
             Consumer<?, ?> consumer,
-            MessageListenerContainer container) {
+            MessageListenerContainer container)
+    {
         log.error("Global error handler for message: {}", record.value().toString());
     }
 }
