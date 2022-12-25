@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.CommonErrorHandler;
@@ -36,10 +37,10 @@ public class KafkaErrorHandler implements CommonErrorHandler {
 
     @Override
     public void handleRecord(
-            Exception thrownException,
+            @NotNull Exception thrownException,
             ConsumerRecord<?, ?> record,
-            Consumer<?, ?> consumer,
-            MessageListenerContainer container)
+            @NotNull Consumer<?, ?> consumer,
+            @NotNull MessageListenerContainer container)
     {
         log.error("Global error handler for message: {}", record.value().toString());
     }
