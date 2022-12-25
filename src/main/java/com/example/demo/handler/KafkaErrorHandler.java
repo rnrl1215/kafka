@@ -30,7 +30,6 @@ public class KafkaErrorHandler implements CommonErrorHandler {
     {
         Collection<TopicPartition> assignedPartitions = container.getAssignedPartitions();
         log.info("error");
-        ContainerProperties containerProperties = container.getContainerProperties();
         consumer.seekToEnd(assignedPartitions);
         consumer.assignment();
     }
