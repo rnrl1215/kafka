@@ -42,6 +42,7 @@ public class KafkaErrorHandler implements CommonErrorHandler {
             @NotNull Consumer<?, ?> consumer,
             @NotNull MessageListenerContainer container)
     {
+
         log.error("Global error handler for message: {}", record.value().toString());
     }
 }
