@@ -20,7 +20,7 @@ import java.util.Collection;
 @Configuration
 public class KafkaErrorHandler implements CommonErrorHandler {
 
-    private final KafkaTemplate<String, ProductInfo> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public void handleOtherException(
