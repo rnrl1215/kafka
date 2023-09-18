@@ -1,5 +1,7 @@
 spring:
   kafka:
+    topics:
+      dead-letter-queue: dlq
     producer:
       bootstrap-servers: localhost:9092
       acks: all
