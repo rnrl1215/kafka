@@ -2,6 +2,7 @@ spring:
   kafka:
     topics:
       dead-letter-queue: dlq
+      test: test
     producer:
       bootstrap-servers: localhost:9092
       acks: all
@@ -10,3 +11,4 @@ spring:
       type: SINGLE
     consumer:
       bootstrap-servers: localhost:9092
+      groupid: test-group

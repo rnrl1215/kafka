@@ -23,12 +23,19 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
 
+    @Value("${spring.kafka.consumer.groupid}")
+    private String groupId;
+
+    @Value("${spring.kafka.topics.test}")
+    private String topic;
+
     private final KafkaErrorHandler kafkaErrorHandler;
 
     @Bean
     public ConsumerFactory<String, ProductInfo> consumerFactory() {
         Map<String,Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        configs.put(ConsumerConfig.GROUP_ID_CONFIG, bootstrapServers);
        return new DefaultKafkaConsumerFactory<>(configs, new StringDeserializer(),
                 new JsonDeserializer<>(ProductInfo.class));
     }
